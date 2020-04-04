@@ -1,0 +1,4 @@
+github.com/alexkappa/mustache v0.0.0-20191113130723-8bb9cfca2bfa h1:dRKEaSUUt7RTzY5j7cJeXRVGwSX+VZZdi5kvSguBjIE=
+github.com/alexkappa/mustache v0.0.0-20191113130723-8bb9cfca2bfa/go.mod h1:6v0WNoCZEQ8K5OZAv82ScIARg2bDqFD+Jl0LWxnApas=
+github.com/golang/protobuf v1.3.5 h1:F768QJ1E9tib+q5Sc8MkdJi1RxLTbRcTf8LJV56aRls=
+github.com/golang/protobuf v1.3.5/go.mod h1:6O5/vntMXwX2lRkT1hjjk0nAC1IDOTvTlVgjlRvqsdk=
