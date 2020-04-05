@@ -39,5 +39,6 @@ func TestAdapterAgain(t *testing.T) {
 	}
 	rsp, _ := adapt.Rank(context.Background(), req)
 	assert.Equal(t, req, rsp)
+	assert.Equal(t, 1, service.RequestCounter)
 	fmt.Println("zomg i have a valid processor", processor)
 }

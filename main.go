@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -26,8 +25,6 @@ func eachify(m *slicemultimap.MultiMap) []interface{} {
 		inner["value"], _ = m.Get(k)
 		a = append(a, inner)
 	}
-	fmt.Fprintln(os.Stderr, "vuck")
-	fmt.Fprintln(os.Stderr, a)
 	return a
 }
 
@@ -137,7 +134,6 @@ func main() {
 	m := &jsonpb.Marshaler{}
 	jsonBytes, _ := m.MarshalToString(req)
 	data := make(map[string]interface{})
-	fmt.Fprintln(os.Stderr, jsonBytes)
 	json.Unmarshal([]byte(jsonBytes), &data)
 
 	for _, file := range jam(data["protoFile"]) {

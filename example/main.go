@@ -11,17 +11,17 @@ import (
 	"github.com/fizx/protoc-gen-thrift/example/generated/thrift/example/example/proto"
 )
 
-type server struct{
-    RequestCounter: int32
+type server struct {
+	RequestCounter int
 }
 
-func (server) IsHealthy(ctx context.Context, req *empty.Empty) (*empty.Empty, error) {
-    server.RequestCounter += 1
+func (srv *server) IsHealthy(ctx context.Context, req *empty.Empty) (*empty.Empty, error) {
+	srv.RequestCounter += 1
 	return req, nil
 }
 
-func (server) Rank(ctx context.Context, req *example.RankingRequest) (*example.RankingRequest, error) {
-    server.RequestCounter += 1
+func (srv *server) Rank(ctx context.Context, req *example.RankingRequest) (*example.RankingRequest, error) {
+	srv.RequestCounter += 1
 	return req, nil
 }
 
