@@ -4,10 +4,9 @@ protoc-gen-thrift takes a protobuf+GRPC IDL, and generates the corresponding Thr
 
     # Usage:
     :$ go get -u github.com/fizx/protoc-gen-thrift 
-    :$ git@github.com:fizx/protoc-gen-thrift.git
     :$ protoc -I/usr/local/include -I. --thrift_out=...    
 
-There's a bit of ceremony involved in the invokation, so check out ./example/Makefile for an example of how to invoke it in a reasonable project.
+There's a bit of ceremony involved in the invokation, so check out [./example/Makefile](./example/Makefile) for an example of how to invoke it in a reasonable project.  There's a roundtripping test in [./example/main_test.go](./example/main_test.go) that might also be interesting.
 
 Code's still pretty ugly, and if you do some odd things in protobuf, I'm sure it'll mildly break.  Also, package selection is pretty broken.  All this is easy to fix, but hey, super-alpha stuff.
 
