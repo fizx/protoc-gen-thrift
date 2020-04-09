@@ -3,7 +3,6 @@
 include "baseplate.thrift"
 
   service Ranking extends baseplate.BaseplateService {
-    bool is_healthy();
     
       RankingRequest Rank (1: RankingRequest request);
   }

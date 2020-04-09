@@ -25,7 +25,6 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "Usage of ", os.Args[0], " [-h host:port] [-u url] [-f[ramed]] function [arg1 [arg2...]]:")
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
-  fmt.Fprintln(os.Stderr, "  bool is_healthy()")
   fmt.Fprintln(os.Stderr, "  RankingRequest Rank(RankingRequest request)")
   fmt.Fprintln(os.Stderr, "  bool is_healthy()")
   fmt.Fprintln(os.Stderr)
@@ -149,32 +148,24 @@ func main() {
   }
   
   switch cmd {
-  case "is_healthy":
-    if flag.NArg() - 1 != 0 {
-      fmt.Fprintln(os.Stderr, "IsHealthy requires 0 args")
-      flag.Usage()
-    }
-    fmt.Print(client.IsHealthy(context.Background()))
-    fmt.Print("\n")
-    break
   case "Rank":
     if flag.NArg() - 1 != 1 {
       fmt.Fprintln(os.Stderr, "Rank requires 1 args")
       flag.Usage()
     }
-    arg10 := flag.Arg(1)
-    mbTrans11 := thrift.NewTMemoryBufferLen(len(arg10))
-    defer mbTrans11.Close()
-    _, err12 := mbTrans11.WriteString(arg10)
-    if err12 != nil {
+    arg8 := flag.Arg(1)
+    mbTrans9 := thrift.NewTMemoryBufferLen(len(arg8))
+    defer mbTrans9.Close()
+    _, err10 := mbTrans9.WriteString(arg8)
+    if err10 != nil {
       Usage()
       return
     }
-    factory13 := thrift.NewTJSONProtocolFactory()
-    jsProt14 := factory13.GetProtocol(mbTrans11)
+    factory11 := thrift.NewTJSONProtocolFactory()
+    jsProt12 := factory11.GetProtocol(mbTrans9)
     argvalue0 := proto.NewRankingRequest()
-    err15 := argvalue0.Read(jsProt14)
-    if err15 != nil {
+    err13 := argvalue0.Read(jsProt12)
+    if err13 != nil {
       Usage()
       return
     }

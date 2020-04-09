@@ -4,7 +4,6 @@ include "baseplate.thrift"
 
 {{#service}}
   service {{name}} extends baseplate.BaseplateService {
-    bool is_healthy();
     {{#method}}
       {{^health_check}}
       {{outputType}} {{name}} (1: {{inputType}} request);

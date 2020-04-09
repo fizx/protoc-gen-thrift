@@ -1117,7 +1117,6 @@ func (p *RequestOptions) String() string {
 type Ranking interface {
   baseplate.BaseplateService
 
-  IsHealthy(ctx context.Context) (r bool, err error)
   // Parameters:
   //  - Request
   Rank(ctx context.Context, request *RankingRequest) (r *RankingRequest, err error)
@@ -1140,25 +1139,16 @@ func NewRankingClient(c thrift.TClient) *RankingClient {
   }
 }
 
-func (p *RankingClient) IsHealthy(ctx context.Context) (r bool, err error) {
-  var _args5 RankingIsHealthyArgs
-  var _result6 RankingIsHealthyResult
-  if err = p.Client_().Call(ctx, "is_healthy", &_args5, &_result6); err != nil {
-    return
-  }
-  return _result6.GetSuccess(), nil
-}
-
 // Parameters:
 //  - Request
 func (p *RankingClient) Rank(ctx context.Context, request *RankingRequest) (r *RankingRequest, err error) {
-  var _args7 RankingRankArgs
-  _args7.Request = request
-  var _result8 RankingRankResult
-  if err = p.Client_().Call(ctx, "Rank", &_args7, &_result8); err != nil {
+  var _args5 RankingRankArgs
+  _args5.Request = request
+  var _result6 RankingRankResult
+  if err = p.Client_().Call(ctx, "Rank", &_args5, &_result6); err != nil {
     return
   }
-  return _result8.GetSuccess(), nil
+  return _result6.GetSuccess(), nil
 }
 
 type RankingProcessor struct {
@@ -1166,58 +1156,9 @@ type RankingProcessor struct {
 }
 
 func NewRankingProcessor(handler Ranking) *RankingProcessor {
-  self9 := &RankingProcessor{baseplate.NewBaseplateServiceProcessor(handler)}
-  self9.AddToProcessorMap("is_healthy", &rankingProcessorIsHealthy{handler:handler})
-  self9.AddToProcessorMap("Rank", &rankingProcessorRank{handler:handler})
-  return self9
-}
-
-type rankingProcessorIsHealthy struct {
-  handler Ranking
-}
-
-func (p *rankingProcessorIsHealthy) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-  args := RankingIsHealthyArgs{}
-  if err = args.Read(iprot); err != nil {
-    iprot.ReadMessageEnd()
-    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-    oprot.WriteMessageBegin("is_healthy", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush(ctx)
-    return false, err
-  }
-
-  iprot.ReadMessageEnd()
-  result := RankingIsHealthyResult{}
-var retval bool
-  var err2 error
-  if retval, err2 = p.handler.IsHealthy(ctx); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing is_healthy: " + err2.Error())
-    oprot.WriteMessageBegin("is_healthy", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush(ctx)
-    return true, err2
-  } else {
-    result.Success = &retval
-}
-  if err2 = oprot.WriteMessageBegin("is_healthy", thrift.REPLY, seqId); err2 != nil {
-    err = err2
-  }
-  if err2 = result.Write(oprot); err == nil && err2 != nil {
-    err = err2
-  }
-  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
-    err = err2
-  }
-  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
-    err = err2
-  }
-  if err != nil {
-    return
-  }
-  return true, err
+  self7 := &RankingProcessor{baseplate.NewBaseplateServiceProcessor(handler)}
+  self7.AddToProcessorMap("Rank", &rankingProcessorRank{handler:handler})
+  return self7
 }
 
 type rankingProcessorRank struct {
@@ -1270,157 +1211,6 @@ var retval *RankingRequest
 
 
 // HELPER FUNCTIONS AND STRUCTURES
-
-type RankingIsHealthyArgs struct {
-}
-
-func NewRankingIsHealthyArgs() *RankingIsHealthyArgs {
-  return &RankingIsHealthyArgs{}
-}
-
-func (p *RankingIsHealthyArgs) Read(iprot thrift.TProtocol) error {
-  if _, err := iprot.ReadStructBegin(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
-  }
-
-
-  for {
-    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
-    if err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
-    }
-    if fieldTypeId == thrift.STOP { break; }
-    if err := iprot.Skip(fieldTypeId); err != nil {
-      return err
-    }
-    if err := iprot.ReadFieldEnd(); err != nil {
-      return err
-    }
-  }
-  if err := iprot.ReadStructEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-  }
-  return nil
-}
-
-func (p *RankingIsHealthyArgs) Write(oprot thrift.TProtocol) error {
-  if err := oprot.WriteStructBegin("is_healthy_args"); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
-  if p != nil {
-  }
-  if err := oprot.WriteFieldStop(); err != nil {
-    return thrift.PrependError("write field stop error: ", err) }
-  if err := oprot.WriteStructEnd(); err != nil {
-    return thrift.PrependError("write struct stop error: ", err) }
-  return nil
-}
-
-func (p *RankingIsHealthyArgs) String() string {
-  if p == nil {
-    return "<nil>"
-  }
-  return fmt.Sprintf("RankingIsHealthyArgs(%+v)", *p)
-}
-
-// Attributes:
-//  - Success
-type RankingIsHealthyResult struct {
-  Success *bool `thrift:"success,0" db:"success" json:"success,omitempty"`
-}
-
-func NewRankingIsHealthyResult() *RankingIsHealthyResult {
-  return &RankingIsHealthyResult{}
-}
-
-var RankingIsHealthyResult_Success_DEFAULT bool
-func (p *RankingIsHealthyResult) GetSuccess() bool {
-  if !p.IsSetSuccess() {
-    return RankingIsHealthyResult_Success_DEFAULT
-  }
-return *p.Success
-}
-func (p *RankingIsHealthyResult) IsSetSuccess() bool {
-  return p.Success != nil
-}
-
-func (p *RankingIsHealthyResult) Read(iprot thrift.TProtocol) error {
-  if _, err := iprot.ReadStructBegin(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
-  }
-
-
-  for {
-    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
-    if err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
-    }
-    if fieldTypeId == thrift.STOP { break; }
-    switch fieldId {
-    case 0:
-      if fieldTypeId == thrift.BOOL {
-        if err := p.ReadField0(iprot); err != nil {
-          return err
-        }
-      } else {
-        if err := iprot.Skip(fieldTypeId); err != nil {
-          return err
-        }
-      }
-    default:
-      if err := iprot.Skip(fieldTypeId); err != nil {
-        return err
-      }
-    }
-    if err := iprot.ReadFieldEnd(); err != nil {
-      return err
-    }
-  }
-  if err := iprot.ReadStructEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-  }
-  return nil
-}
-
-func (p *RankingIsHealthyResult)  ReadField0(iprot thrift.TProtocol) error {
-  if v, err := iprot.ReadBool(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
-  return nil
-}
-
-func (p *RankingIsHealthyResult) Write(oprot thrift.TProtocol) error {
-  if err := oprot.WriteStructBegin("is_healthy_result"); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
-  if p != nil {
-    if err := p.writeField0(oprot); err != nil { return err }
-  }
-  if err := oprot.WriteFieldStop(); err != nil {
-    return thrift.PrependError("write field stop error: ", err) }
-  if err := oprot.WriteStructEnd(); err != nil {
-    return thrift.PrependError("write struct stop error: ", err) }
-  return nil
-}
-
-func (p *RankingIsHealthyResult) writeField0(oprot thrift.TProtocol) (err error) {
-  if p.IsSetSuccess() {
-    if err := oprot.WriteFieldBegin("success", thrift.BOOL, 0); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
-    if err := oprot.WriteBool(bool(*p.Success)); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T.success (0) field write error: ", p), err) }
-    if err := oprot.WriteFieldEnd(); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
-  }
-  return err
-}
-
-func (p *RankingIsHealthyResult) String() string {
-  if p == nil {
-    return "<nil>"
-  }
-  return fmt.Sprintf("RankingIsHealthyResult(%+v)", *p)
-}
 
 // Attributes:
 //  - Request
