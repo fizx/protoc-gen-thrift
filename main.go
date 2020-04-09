@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -121,6 +122,22 @@ func typeFromMap(x interface{}) string {
 	return ttype
 }
 
+func parseParams(p string) map[string]interface{} {
+	m := make(map[string]interface{})
+	list := strings.Split(p, ",")
+	for _, e := range list {
+		ee := strings.Split(e, "=")
+		m[ee[0]] = ee[1]
+	}
+	return m
+}
+
+func merge(target *map[string]interface{}, src map[string]interface{}) {
+	for k, v := range src {
+		(*target)[k] = v
+	}
+}
+
 //go:generate go run gen/main.go
 func main() {
 	for k, v := range thriftTypeMap {
@@ -132,11 +149,13 @@ func main() {
 	rsp := &plugin_go.CodeGeneratorResponse{}
 	_ = proto.Unmarshal(input, req)
 	m := &jsonpb.Marshaler{}
+
 	jsonBytes, _ := m.MarshalToString(req)
 	data := make(map[string]interface{})
 	json.Unmarshal([]byte(jsonBytes), &data)
-
+	fmt.Fprintln(os.Stderr, parseParams(req.GetParameter()))
 	for _, file := range jam(data["protoFile"]) {
+		merge(&file, parseParams(req.GetParameter()))
 		lists := make(map[string]bool)
 		maps := make(map[string]bool)
 		file["package"] = strings.Split(file["name"].(string), ".")[0]
@@ -226,7 +245,7 @@ func main() {
 				out["proto_type"] = goType(k)
 			} else {
 				out["thrift_type"] = "*t." + k
-				out["proto_type"] = "*example." + k
+				out["proto_type"] = "*p." + k
 			}
 			reg := regexp.MustCompile("[\\W]+")
 			out["safe_thrift_type"] = reg.ReplaceAllString(k, "_")
@@ -247,7 +266,7 @@ func main() {
 				out["left_proto"] = l
 			} else {
 				out["left_thrift"] = "*t." + l
-				out["left_proto"] = "*example." + l
+				out["left_proto"] = "*p." + l
 			}
 			out["right_type"] = r
 			if isLower(r) {
@@ -255,7 +274,7 @@ func main() {
 				out["right_proto"] = r
 			} else {
 				out["right_thrift"] = "*t." + r
-				out["right_proto"] = "*example." + r
+				out["right_proto"] = "*p." + r
 			}
 			ml = append(ml, out)
 		}

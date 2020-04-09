@@ -3,7 +3,7 @@ package adapter
 import (
   "context"
   "github.com/golang/protobuf/ptypes/empty"
-  "github.com/fizx/protoc-gen-thrift/example/generated/example"
+ p "github.com/fizx/protoc-gen-thrift/example/generated/example"
  t "github.com/fizx/protoc-gen-thrift/example/generated/thrift/example/example/proto"
 )
 
@@ -42,16 +42,16 @@ func doubleToThrift(s float64) float64 {
 
 
 
-  func EmptyToProto(in *t.Empty) *example.Empty {
+  func EmptyToProto(in *t.Empty) *p.Empty {
     if in == nil {
       return nil
     }
-    out := &example.Empty{}
+    out := &p.Empty{}
 
 
     return out
   }
-  func EmptyToThrift(in *example.Empty) *t.Empty {
+  func EmptyToThrift(in *p.Empty) *t.Empty {
     if in == nil {
       return nil
     }

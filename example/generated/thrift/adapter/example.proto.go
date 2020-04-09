@@ -3,7 +3,7 @@ package adapter
 import (
   "context"
   "github.com/golang/protobuf/ptypes/empty"
-  "github.com/fizx/protoc-gen-thrift/example/generated/example"
+ p "github.com/fizx/protoc-gen-thrift/example/generated/example"
  t "github.com/fizx/protoc-gen-thrift/example/generated/thrift/example/example/proto"
 )
 
@@ -40,18 +40,18 @@ func doubleToThrift(s float64) float64 {
   return s
 }
 
-func map_string_Feature_ToProto(in map[string]*t.Feature) map[string]*example.Feature {
+func map_string_Feature_ToProto(in map[string]*t.Feature) map[string]*p.Feature {
   if in == nil {
     return nil
   }
-  out := make(map[string]*example.Feature)
+  out := make(map[string]*p.Feature)
   for k, v := range in {
     out[stringToProto(k)] = FeatureToProto(v)
   }
   return out
 }
 
-func map_string_Feature_ToThrift(in map[string]*example.Feature) map[string]*t.Feature {
+func map_string_Feature_ToThrift(in map[string]*p.Feature) map[string]*t.Feature {
   if in == nil {
     return nil
   }
@@ -63,18 +63,18 @@ func map_string_Feature_ToThrift(in map[string]*example.Feature) map[string]*t.F
 }
 
 
-func list_Entity_ToProto(in []*t.Entity) []*example.Entity {
+func list_Entity_ToProto(in []*t.Entity) []*p.Entity {
   if in == nil {
     return nil
   }
-  out := make([]*example.Entity, len(in))
+  out := make([]*p.Entity, len(in))
   for i, e := range in {
     out[i] = EntityToProto(e)
   }
   return out
 }
 
-func list_Entity_ToThrift(in []*example.Entity) []*t.Entity {
+func list_Entity_ToThrift(in []*p.Entity) []*t.Entity {
   if in == nil {
     return nil
   }
@@ -84,7 +84,7 @@ func list_Entity_ToThrift(in []*example.Entity) []*t.Entity {
   }
   return out
 }
-//map[go_type:Entity proto_type:*example.Entity safe_thrift_type:Entity thrift_type:*t.Entity]
+//map[go_type:Entity proto_type:*p.Entity safe_thrift_type:Entity thrift_type:*t.Entity]
 
 func list_string_ToProto(in []string) []string {
   if in == nil {
@@ -132,11 +132,11 @@ func list_i64_ToThrift(in []int64) []int64 {
 }
 //map[go_type:int64 proto_type:int64 safe_thrift_type:i64 thrift_type:int64]
 
-  func RankingRequestToProto(in *t.RankingRequest) *example.RankingRequest {
+  func RankingRequestToProto(in *t.RankingRequest) *p.RankingRequest {
     if in == nil {
       return nil
     }
-    out := &example.RankingRequest{}
+    out := &p.RankingRequest{}
         out.Context = EntityToProto(in.Context)
     
         out.Candidates = list_Entity_ToProto(in.Candidates)
@@ -146,7 +146,7 @@ func list_i64_ToThrift(in []int64) []int64 {
 
     return out
   }
-  func RankingRequestToThrift(in *example.RankingRequest) *t.RankingRequest {
+  func RankingRequestToThrift(in *p.RankingRequest) *t.RankingRequest {
     if in == nil {
       return nil
     }
@@ -162,11 +162,11 @@ func list_i64_ToThrift(in []int64) []int64 {
   }
   
 
-  func EntityToProto(in *t.Entity) *example.Entity {
+  func EntityToProto(in *t.Entity) *p.Entity {
     if in == nil {
       return nil
     }
-    out := &example.Entity{}
+    out := &p.Entity{}
         out.Id = stringToProto(in.ID)
     
         out.Features = map_string_Feature_ToProto(in.Features)
@@ -176,7 +176,7 @@ func list_i64_ToThrift(in []int64) []int64 {
 
     return out
   }
-  func EntityToThrift(in *example.Entity) *t.Entity {
+  func EntityToThrift(in *p.Entity) *t.Entity {
     if in == nil {
       return nil
     }
@@ -192,11 +192,11 @@ func list_i64_ToThrift(in []int64) []int64 {
   }
   
 
-  func FeatureToProto(in *t.Feature) *example.Feature {
+  func FeatureToProto(in *t.Feature) *p.Feature {
     if in == nil {
       return nil
     }
-    out := &example.Feature{}
+    out := &p.Feature{}
     
     
     
@@ -205,44 +205,44 @@ func list_i64_ToThrift(in []int64) []int64 {
 
 
         if in.ValueSelection == t.FeatureValue_AsString {
-          out.Value = &example.Feature_AsString {
+          out.Value = &p.Feature_AsString {
             AsString: stringToProto(in.AsString),
           }
         }
       
         if in.ValueSelection == t.FeatureValue_AsInt {
-          out.Value = &example.Feature_AsInt {
+          out.Value = &p.Feature_AsInt {
             AsInt: i64ToProto(in.AsInt),
           }
         }
       
         if in.ValueSelection == t.FeatureValue_AsFloat {
-          out.Value = &example.Feature_AsFloat {
+          out.Value = &p.Feature_AsFloat {
             AsFloat: doubleToProto(in.AsFloat),
           }
         }
       
         if in.ValueSelection == t.FeatureValue_AsBool {
-          out.Value = &example.Feature_AsBool {
+          out.Value = &p.Feature_AsBool {
             AsBool: boolToProto(in.AsBool),
           }
         }
       
         if in.ValueSelection == t.FeatureValue_AsStringArray {
-          out.Value = &example.Feature_AsStringArray {
+          out.Value = &p.Feature_AsStringArray {
             AsStringArray: StringArrayToProto(in.AsStringArray),
           }
         }
       
         if in.ValueSelection == t.FeatureValue_AsIntArray {
-          out.Value = &example.Feature_AsIntArray {
+          out.Value = &p.Feature_AsIntArray {
             AsIntArray: IntArrayToProto(in.AsIntArray),
           }
         }
 
     return out
   }
-  func FeatureToThrift(in *example.Feature) *t.Feature {
+  func FeatureToThrift(in *p.Feature) *t.Feature {
     if in == nil {
       return nil
     }
@@ -253,32 +253,32 @@ func list_i64_ToThrift(in []int64) []int64 {
     
     
 
-        if x, ok := in.GetValue().(*example.Feature_AsString); ok {
+        if x, ok := in.GetValue().(*p.Feature_AsString); ok {
           out.ValueSelection = t.FeatureValue_AsString
 		      out.AsString = stringToThrift(x.AsString)
 	      }      
       
-        if x, ok := in.GetValue().(*example.Feature_AsInt); ok {
+        if x, ok := in.GetValue().(*p.Feature_AsInt); ok {
           out.ValueSelection = t.FeatureValue_AsInt
 		      out.AsInt = i64ToThrift(x.AsInt)
 	      }      
       
-        if x, ok := in.GetValue().(*example.Feature_AsFloat); ok {
+        if x, ok := in.GetValue().(*p.Feature_AsFloat); ok {
           out.ValueSelection = t.FeatureValue_AsFloat
 		      out.AsFloat = doubleToThrift(x.AsFloat)
 	      }      
       
-        if x, ok := in.GetValue().(*example.Feature_AsBool); ok {
+        if x, ok := in.GetValue().(*p.Feature_AsBool); ok {
           out.ValueSelection = t.FeatureValue_AsBool
 		      out.AsBool = boolToThrift(x.AsBool)
 	      }      
       
-        if x, ok := in.GetValue().(*example.Feature_AsStringArray); ok {
+        if x, ok := in.GetValue().(*p.Feature_AsStringArray); ok {
           out.ValueSelection = t.FeatureValue_AsStringArray
 		      out.AsStringArray = StringArrayToThrift(x.AsStringArray)
 	      }      
       
-        if x, ok := in.GetValue().(*example.Feature_AsIntArray); ok {
+        if x, ok := in.GetValue().(*p.Feature_AsIntArray); ok {
           out.ValueSelection = t.FeatureValue_AsIntArray
 		      out.AsIntArray = IntArrayToThrift(x.AsIntArray)
 	      }      
@@ -287,17 +287,17 @@ func list_i64_ToThrift(in []int64) []int64 {
   }
   
 
-  func StringArrayToProto(in *t.StringArray) *example.StringArray {
+  func StringArrayToProto(in *t.StringArray) *p.StringArray {
     if in == nil {
       return nil
     }
-    out := &example.StringArray{}
+    out := &p.StringArray{}
         out.Value = list_string_ToProto(in.Value)
 
 
     return out
   }
-  func StringArrayToThrift(in *example.StringArray) *t.StringArray {
+  func StringArrayToThrift(in *p.StringArray) *t.StringArray {
     if in == nil {
       return nil
     }
@@ -309,17 +309,17 @@ func list_i64_ToThrift(in []int64) []int64 {
   }
   
 
-  func IntArrayToProto(in *t.IntArray) *example.IntArray {
+  func IntArrayToProto(in *t.IntArray) *p.IntArray {
     if in == nil {
       return nil
     }
-    out := &example.IntArray{}
+    out := &p.IntArray{}
         out.Value = list_i64_ToProto(in.Value)
 
 
     return out
   }
-  func IntArrayToThrift(in *example.IntArray) *t.IntArray {
+  func IntArrayToThrift(in *p.IntArray) *t.IntArray {
     if in == nil {
       return nil
     }
@@ -331,17 +331,17 @@ func list_i64_ToThrift(in []int64) []int64 {
   }
   
 
-  func RequestOptionsToProto(in *t.RequestOptions) *example.RequestOptions {
+  func RequestOptionsToProto(in *t.RequestOptions) *p.RequestOptions {
     if in == nil {
       return nil
     }
-    out := &example.RequestOptions{}
+    out := &p.RequestOptions{}
         out.Limit = i32ToProto(in.Limit)
 
 
     return out
   }
-  func RequestOptionsToThrift(in *example.RequestOptions) *t.RequestOptions {
+  func RequestOptionsToThrift(in *p.RequestOptions) *t.RequestOptions {
     if in == nil {
       return nil
     }
@@ -356,7 +356,7 @@ func list_i64_ToThrift(in []int64) []int64 {
 
 
   type RankingAdapterImpl struct {
-    inner example.RankingServer
+    inner p.RankingServer
   }
 
   func (impl RankingAdapterImpl) IsHealthy(ctx context.Context) (bool, error) {
@@ -370,7 +370,7 @@ func list_i64_ToThrift(in []int64) []int64 {
       return RankingRequestToThrift(out), err
     }
 
-  func RankingAdapter(server example.RankingServer) t.Ranking {
+  func RankingAdapter(server p.RankingServer) t.Ranking {
     return &RankingAdapterImpl {
       inner: server,
     }

@@ -3,8 +3,8 @@ package adapter
 import (
   "context"
   "github.com/golang/protobuf/ptypes/empty"
-  "github.com/fizx/protoc-gen-thrift/example/generated/example"
- t "github.com/fizx/protoc-gen-thrift/example/generated/thrift/example/example/proto"
+ p "{{protopkg}}"
+ t "{{thriftpkg}}"
 )
 
 func stringToProto(s string) string {
@@ -91,11 +91,11 @@ func list_{{safe_thrift_type}}_ToThrift(in []{{proto_type}}) []{{thrift_type}} {
 {{/lists}}
 
 {{#messageType}}
-  func {{name}}ToProto(in *t.{{name}}) *example.{{name}} {
+  func {{name}}ToProto(in *t.{{name}}) *p.{{name}} {
     if in == nil {
       return nil
     }
-    out := &example.{{name}}{}
+    out := &p.{{name}}{}
     {{#field}}
       {{^is_one_of}}
         out.{{camel_name}} = {{safe_thrift_type}}ToProto(in.{{special_camel_name}})
@@ -106,7 +106,7 @@ func list_{{safe_thrift_type}}_ToThrift(in []{{proto_type}}) []{{thrift_type}} {
 
       {{#value}}
         if in.{{key}}Selection == t.{{name}}{{key}}_{{inner_name}} {
-          out.{{key}} = &example.{{name}}_{{inner_name}} {
+          out.{{key}} = &p.{{name}}_{{inner_name}} {
             {{inner_name}}: {{inner_type}}ToProto(in.{{inner_name}}),
           }
         }
@@ -115,7 +115,7 @@ func list_{{safe_thrift_type}}_ToThrift(in []{{proto_type}}) []{{thrift_type}} {
 
     return out
   }
-  func {{name}}ToThrift(in *example.{{name}}) *t.{{name}} {
+  func {{name}}ToThrift(in *p.{{name}}) *t.{{name}} {
     if in == nil {
       return nil
     }
@@ -128,7 +128,7 @@ func list_{{safe_thrift_type}}_ToThrift(in []{{proto_type}}) []{{thrift_type}} {
 
     {{#oneofs}}
       {{#value}}
-        if x, ok := in.Get{{key}}().(*example.{{name}}_{{inner_name}}); ok {
+        if x, ok := in.Get{{key}}().(*p.{{name}}_{{inner_name}}); ok {
           out.{{key}}Selection = t.{{name}}{{key}}_{{inner_name}}
 		      out.{{inner_name}} = {{inner_type}}ToThrift(x.{{inner_name}})
 	      }      
@@ -144,7 +144,7 @@ func list_{{safe_thrift_type}}_ToThrift(in []{{proto_type}}) []{{thrift_type}} {
 {{#service}}
 
   type {{name}}AdapterImpl struct {
-    inner example.{{name}}Server
+    inner p.{{name}}Server
   }
 
   func (impl {{name}}AdapterImpl) IsHealthy(ctx context.Context) (bool, error) {
@@ -161,7 +161,7 @@ func list_{{safe_thrift_type}}_ToThrift(in []{{proto_type}}) []{{thrift_type}} {
     {{/health_check}}
   {{/method}}
 
-  func {{name}}Adapter(server example.{{name}}Server) t.Ranking {
+  func {{name}}Adapter(server p.{{name}}Server) t.Ranking {
     return &{{name}}AdapterImpl {
       inner: server,
     }
